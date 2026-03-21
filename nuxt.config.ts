@@ -6,5 +6,12 @@ export default defineNuxtConfig({
     classSuffix: '',
     preference: 'dark' 
   },
+  runtimeConfig: {
+    notionToken:            process.env.NOTION_TOKEN,
+    notionProjectsDb:       process.env.NOTION_PROJECTS_DB,
+    notionExperienceDb:     process.env.NOTION_EXPERIENCE_DB,
+    notionSkillsDb:         process.env.NOTION_SKILLS_DB,
+    notionCertificationsDb: process.env.NOTION_CERTIFICATIONS_DB,
+  },
   devtools: { enabled: true }
 })
