@@ -98,7 +98,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@500;600&family=DM+Sans:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Syne:wght@700;800&family=JetBrains+Mono:wght@500;600&family=DM+Sans:wght@400;500&display=swap');
 
 .theme-root {
   --bg:      #0a0a0f;
@@ -266,12 +266,12 @@ onMounted(() => {
 }
 
 .name-heading {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
-  font-weight: 800;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 300;
   line-height: 1.05;
   margin: 0 0 0.75rem;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.04em;
   background: linear-gradient(135deg, var(--text) 60%, var(--accent2));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

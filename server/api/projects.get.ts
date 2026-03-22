@@ -2,14 +2,14 @@ import { Client } from '@notionhq/client'
 
 export default defineEventHandler(async () => {
   const config = useRuntimeConfig()
-  const notion = new Client({ auth: config.notionToken })
+  const notion = new Client({ auth: config.notionToken as string })
 
   const response = await notion.databases.query({
     database_id: config.notionProjectsDb as string,
     sorts: [{ property: 'Order', direction: 'ascending' }],
   })
 
-  const projects = response.results.map((page: any) => {
+  return response.results.map((page: any, index: number) => {
     const props = page.properties
     return {
       id:          page.id,
@@ -18,9 +18,7 @@ export default defineEventHandler(async () => {
       tags:        props.Tags?.multi_select?.map((t: any) => t.name) ?? [],
       demo:        props.Demo?.url ?? '',
       github:      props.GitHub?.url ?? '',
-      image:       props.Image?.files?.[0]?.file?.url ?? props.Image?.files?.[0]?.external?.url ?? '',
+      image:       `/images/projects/proj${index + 1}.png`,
     }
   })
-
-  return projects
 })
