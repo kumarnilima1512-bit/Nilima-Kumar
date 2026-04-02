@@ -7,18 +7,15 @@
         <div class="title-line" />
       </div>
 
-      <!-- Loading -->
       <div v-if="pending" class="loading-wrap">
         <div class="loader" />
         <p class="loading-text">Loading experience...</p>
       </div>
 
-      <!-- Error -->
       <div v-else-if="error" class="error-wrap">
         <p>Failed to load experience.</p>
       </div>
 
-      <!-- Timeline -->
       <div v-else class="timeline-wrap" ref="timelineRef">
         <div class="timeline-track">
           <div class="timeline-progress" :style="{ height: progressHeight + '%' }" />
@@ -37,30 +34,40 @@
           </div>
 
           <div class="exp-card">
-            <div class="card-top-bar" :style="{ background: i === 0 ? 'linear-gradient(90deg,#7c3aed,#a855f7)' : i === 1 ? 'linear-gradient(90deg,#06b6d4,#0891b2)' : 'linear-gradient(90deg,#10b981,#059669)' }" />
+            <!-- Dynamic color top bar — cycles through colors -->
+            <div class="card-top-bar" :style="{ background: topBarColor(i) }" />
+
             <div class="card-header">
-              <div class="card-icon">{{ i === 0 ? '💼' : i === 1 ? '🎓' : '🤖' }}</div>
               <div>
                 <h3 class="card-role">{{ exp.role }}</h3>
                 <p class="card-company">{{ exp.company }}</p>
               </div>
             </div>
+
             <div class="card-meta">
               <span class="meta-badge">
-                <svg viewBox="0 0 24 24" fill="none" class="meta-icon"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><line x1="3" y1="9" x2="21" y2="9" stroke="currentColor" stroke-width="2"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" class="meta-icon">
+                  <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                  <line x1="3" y1="9" x2="21" y2="9" stroke="currentColor" stroke-width="2"/>
+                </svg>
                 {{ exp.period }}
               </span>
               <span class="meta-badge">
-                <svg viewBox="0 0 24 24" fill="none" class="meta-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" class="meta-icon">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+                </svg>
                 {{ exp.location }}
               </span>
               <span class="meta-badge type-badge">{{ exp.type }}</span>
             </div>
+
             <ul class="card-points">
               <li v-for="point in exp.points" :key="point" class="point">
                 <span class="point-dot" />{{ point }}
               </li>
             </ul>
+
             <div class="card-tags">
               <span v-for="tag in exp.tags" :key="tag" class="tag">{{ tag }}</span>
             </div>
@@ -75,13 +82,27 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const colorMode    = useColorMode()
-const timelineRef  = ref(null)
-const itemRefs     = ref([])
-const visibleItems = ref([])
+const colorMode      = useColorMode()
+const timelineRef    = ref(null)
+const itemRefs       = ref([])
+const visibleItems   = ref([])
 const progressHeight = ref(0)
 
 const { data: experiences, pending, error } = await useFetch('/api/experience')
+
+// Cycles through colors — works for any number of experiences
+const colors = [
+  'linear-gradient(90deg, #7c3aed, #a855f7)',
+  'linear-gradient(90deg, #06b6d4, #0891b2)',
+  'linear-gradient(90deg, #10b981, #059669)',
+  'linear-gradient(90deg, #f59e0b, #d97706)',
+  'linear-gradient(90deg, #ec4899, #db2777)',
+  'linear-gradient(90deg, #6366f1, #4f46e5)',
+]
+
+function topBarColor(i) {
+  return colors[i % colors.length]
+}
 
 function checkVisibility() {
   const wh = window.innerHeight
@@ -91,8 +112,8 @@ function checkVisibility() {
     if (rect.top < wh * 0.85) visibleItems.value[i] = true
   })
   if (timelineRef.value) {
-    const rect  = timelineRef.value.getBoundingClientRect()
-    const seen  = Math.min(window.innerHeight - rect.top, rect.height)
+    const rect = timelineRef.value.getBoundingClientRect()
+    const seen = Math.min(window.innerHeight - rect.top, rect.height)
     progressHeight.value = Math.max(0, Math.min(100, (seen / rect.height) * 100))
   }
 }
@@ -116,6 +137,7 @@ onUnmounted(() => window.removeEventListener('scroll', checkVisibility))
   --glow: rgba(109,40,217,0.12); --card: rgba(109,40,217,0.04); --border: rgba(109,40,217,0.18);
   background: var(--bg);
 }
+
 .exp-section { max-width: 1000px; margin: 0 auto; padding: 6rem 2rem; }
 .section-title-wrap { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 5rem; }
 .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem,4vw,2.8rem); font-weight: 800; color: var(--text); white-space: nowrap; }
@@ -157,13 +179,12 @@ onUnmounted(() => window.removeEventListener('scroll', checkVisibility))
 .exp-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; backdrop-filter: blur(10px); transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; }
 .exp-card:hover { border-color: var(--accent2); box-shadow: 0 0 28px var(--glow), 0 8px 32px rgba(0,0,0,0.25); transform: translateY(-4px); }
 .card-top-bar { height: 4px; width: 100%; }
-.card-header { display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem 1.25rem 0.5rem; }
-.card-icon { font-size: 2rem; line-height: 1; flex-shrink: 0; }
+.card-header { padding: 1.25rem 1.25rem 0.5rem; }
 .card-role { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
 .card-company { font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--accent2); font-weight: 600; }
 .card-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.5rem 1.25rem 0.75rem; }
 .meta-badge { display: inline-flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--subtext); background: var(--card); border: 1px solid var(--border); padding: 0.2rem 0.6rem; border-radius: 999px; }
-.type-badge { color: var(--accent2); border-color: var(--border); }
+.type-badge { color: var(--accent2); }
 .meta-icon { width: 12px; height: 12px; flex-shrink: 0; }
 .card-points { list-style: none; padding: 0 1.25rem 0.75rem; margin: 0; display: flex; flex-direction: column; gap: 0.45rem; }
 .point { display: flex; align-items: flex-start; gap: 0.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--subtext); line-height: 1.5; }
