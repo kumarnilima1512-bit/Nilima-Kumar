@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@google/genai": "^2.13.0",
     "@notionhq/client": "^2.2.15",
     "@nuxtjs/color-mode": "^4.0.0",
     "nuxt": "^4.4.2",

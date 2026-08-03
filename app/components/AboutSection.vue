@@ -30,7 +30,7 @@
 
           <div class="avail-badge">
             <span class="avail-dot" />
-            Available for work
+            Nilima Kumar
           </div>
         </div>
 
@@ -59,14 +59,14 @@
           </p>
 
           <!-- CV Button -->
-          <a href="/Nilima_Kumar_CV.pdf" download class="cv-btn">
+          <!-- <a href="/Nilima_Kumar_CV.pdf" download class="cv-btn">
             <svg viewBox="0 0 24 24" fill="none" class="btn-icon">
               <path d="M12 16l-4-4h2.5V4h3v8H16l-4 4z" fill="currentColor"/>
               <path d="M4 18h16v2H4v-2z" fill="currentColor"/>
             </svg>
             Download CV
             <span class="btn-glow" />
-          </a>
+          </a> -->
 
         </div>
       </div>

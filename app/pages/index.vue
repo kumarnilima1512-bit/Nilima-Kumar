@@ -9,6 +9,7 @@ definePageMeta({ layout: 'default' })
     <div id="projects"><ProjectsSection /></div>
     <div id="experience"><ExperienceSection /></div>
     <div id="skills"><SkillsSection /></div>
-    <div id="certifications"><CertificationsSection /></div>
+    <div id="certifications"><CertificationSection /></div>
+    <div id="contact"><ContactSection /></div>
   </div>
 </template>
