@@ -163,10 +163,25 @@ onMounted(() => {
   background: var(--bg);
 }
 
+/* ── Section ─────────────────────────────────── */
 .about-section {
   max-width: 1100px;
   margin: 0 auto;
   padding: 6rem 2rem;
+}
+
+/* Tablet padding */
+@media (max-width: 768px) {
+  .about-section {
+    padding: 4rem 1.5rem;
+  }
+}
+
+/* Small phone padding */
+@media (max-width: 480px) {
+  .about-section {
+    padding: 3rem 1.1rem;
+  }
 }
 
 .section-title-wrap {
@@ -175,6 +190,13 @@ onMounted(() => {
   gap: 1.5rem;
   margin-bottom: 4rem;
 }
+@media (max-width: 480px) {
+  .section-title-wrap {
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+}
+
 .section-title {
   font-family: 'Syne', sans-serif;
   font-size: clamp(2rem, 4vw, 2.8rem);
@@ -195,11 +217,17 @@ onMounted(() => {
   background: linear-gradient(90deg, var(--border), transparent);
 }
 
+/* ── Layout: stacks on mobile, row on tablet+ ── */
 .about-inner {
   display: flex;
   flex-direction: column;
   gap: 3rem;
   align-items: center;
+}
+@media (max-width: 480px) {
+  .about-inner {
+    gap: 2rem;
+  }
 }
 @media (min-width: 768px) {
   .about-inner {
@@ -219,12 +247,20 @@ onMounted(() => {
   cursor: pointer;
   transform-style: preserve-3d;
   will-change: transform;
-  /* entry animation */
-  animation: none;
   transition: opacity 0.9s ease 0.2s;
 }
 .about-image-wrap.loaded {
   opacity: 1;
+}
+
+/* Scale image down to fit narrow screens without overflow,
+   keeping the same aspect ratio */
+@media (max-width: 480px) {
+  .about-image-wrap {
+    width: min(220px, 70vw);
+    height: auto;
+    aspect-ratio: 260 / 300;
+  }
 }
 
 .about-img {
@@ -296,6 +332,13 @@ onMounted(() => {
   box-shadow: 0 0 16px rgba(34,197,94,0.15);
   pointer-events: none;
 }
+@media (max-width: 480px) {
+  .avail-badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.7rem;
+    bottom: -14px;
+  }
+}
 .avail-dot {
   width: 7px;
   height: 7px;
@@ -312,6 +355,7 @@ onMounted(() => {
 /* ── Content ─────────────────────────────────── */
 .about-content {
   flex: 1;
+  width: 100%;
   opacity: 0;
   transform: translateX(30px);
   transition: opacity 0.9s ease 0.4s, transform 0.9s cubic-bezier(0.34,1.2,0.64,1) 0.4s;
@@ -319,6 +363,15 @@ onMounted(() => {
 .about-content.loaded {
   opacity: 1;
   transform: translateX(0);
+}
+/* No horizontal slide-in on mobile — avoids overflow during animation */
+@media (max-width: 767px) {
+  .about-content {
+    transform: translateY(20px);
+  }
+  .about-content.loaded {
+    transform: translateY(0);
+  }
 }
 
 .bio-text {
@@ -328,6 +381,12 @@ onMounted(() => {
   color: var(--subtext);
   margin-bottom: 1.2rem;
   transition: color 0.5s ease;
+}
+@media (max-width: 480px) {
+  .bio-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
 }
 .accent {
   color: var(--accent2);

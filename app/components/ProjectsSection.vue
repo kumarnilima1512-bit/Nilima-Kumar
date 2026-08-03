@@ -20,7 +20,7 @@
 
       <!-- Orbital System -->
       <div v-else class="orbital-system">
-        <div class="orbit-ring" />
+        <div class="orbit-ring" :style="ringStyle" />
 
         <!-- Center Avatar -->
         <div class="center-avatar">
@@ -36,6 +36,7 @@
           :style="nodeStyle(i)"
           @mouseenter="pauseOrbit(); hoveredCard = i"
           @mouseleave="resumeOrbit(); hoveredCard = null"
+          @click.stop="toggleCard(i)"
         >
           <div class="node-bubble" :class="{ active: hoveredCard === i, 'yellow-bg': i === 1 }">
             <img
@@ -48,7 +49,7 @@
           </div>
 
           <transition name="card-pop">
-            <div v-if="hoveredCard === i" class="project-popup" :class="popupPosition(i)">
+            <div v-if="hoveredCard === i" class="project-popup" :class="popupPosition(i)" @click.stop>
               <h3 class="popup-title">{{ project.title }}</h3>
               <p class="popup-desc">{{ project.description }}</p>
               <div class="popup-tags">
@@ -80,7 +81,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const colorMode   = useColorMode()
 const hoveredCard = ref(null)
@@ -90,15 +91,32 @@ let   paused      = false
 
 const { data: projects, pending, error } = await useFetch('/api/projects')
 
-const RADIUS = 210
+// Orbit radius shrinks on small screens so the circle still fits and keeps
+// rotating, instead of being disabled/stacked on mobile.
+const orbitRadius = ref(210)
+
+function updateRadius() {
+  const w = window.innerWidth
+  if (w <= 380)      orbitRadius.value = 85
+  else if (w <= 480)  orbitRadius.value = 100
+  else if (w <= 640)  orbitRadius.value = 120
+  else if (w <= 900)  orbitRadius.value = 160
+  else                orbitRadius.value = 210
+}
+
+const ringStyle = computed(() => ({
+  width:  `${orbitRadius.value * 2}px`,
+  height: `${orbitRadius.value * 2}px`,
+}))
+
 const SPEED  = 0.005
 
 function nodeStyle(i) {
   const total     = (projects.value?.length || 1)
   const baseAngle = (i / total) * Math.PI * 2
   const current   = baseAngle + angle.value
-  const x = Math.cos(current) * RADIUS
-  const y = Math.sin(current) * RADIUS
+  const x = Math.cos(current) * orbitRadius.value
+  const y = Math.sin(current) * orbitRadius.value
   return { transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }
 }
 
@@ -122,8 +140,37 @@ function animate() {
 function pauseOrbit()  { paused = true }
 function resumeOrbit() { paused = false }
 
-onMounted(() => { animFrame = requestAnimationFrame(animate) })
-onUnmounted(() => { if (animFrame) cancelAnimationFrame(animFrame) })
+// Tap-to-toggle for touch devices (mouseenter/mouseleave don't fire on touch,
+// so without this mobile users could never see project details).
+function toggleCard(i) {
+  if (hoveredCard.value === i) {
+    hoveredCard.value = null
+    resumeOrbit()
+  } else {
+    hoveredCard.value = i
+    pauseOrbit()
+  }
+}
+
+// Tapping anywhere outside an open popup closes it (mobile UX)
+function handleOutsideClick() {
+  if (hoveredCard.value !== null) {
+    hoveredCard.value = null
+    resumeOrbit()
+  }
+}
+
+onMounted(() => {
+  updateRadius()
+  animFrame = requestAnimationFrame(animate)
+  document.addEventListener('click', handleOutsideClick)
+  window.addEventListener('resize', updateRadius)
+})
+onUnmounted(() => {
+  if (animFrame) cancelAnimationFrame(animFrame)
+  document.removeEventListener('click', handleOutsideClick)
+  window.removeEventListener('resize', updateRadius)
+})
 </script>
 
 <style scoped>
@@ -156,7 +203,7 @@ onUnmounted(() => { if (animFrame) cancelAnimationFrame(animFrame) })
 
 /* Orbital */
 .orbital-system { position: relative; width: 100%; height: 560px; display: flex; align-items: center; justify-content: center; }
-.orbit-ring { position: absolute; width: 420px; height: 420px; border-radius: 50%; border: 1.5px dashed rgba(168,85,247,0.2); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+.orbit-ring { position: absolute; border-radius: 50%; border: 1.5px dashed rgba(168,85,247,0.2); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; transition: width 0.3s ease, height 0.3s ease; }
 .center-avatar { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 10; width: 150px; height: 150px; }
 .avatar-glow { position: absolute; inset: -14px; border-radius: 50%; background: radial-gradient(circle, var(--glow) 0%, transparent 70%); animation: pulseGlow 2.5s ease-in-out infinite; }
 @keyframes pulseGlow { 0%,100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.12); } }
@@ -191,11 +238,37 @@ onUnmounted(() => { if (animFrame) cancelAnimationFrame(animFrame) })
 .card-pop-enter-from { opacity: 0; transform: scale(0.9); }
 .card-pop-leave-to { opacity: 0; }
 
+/* Tablet: shrink orbit + section padding so it doesn't overflow */
+@media (max-width: 900px) {
+  .projects-section { padding: 4.5rem 1.5rem; }
+  .orbital-system { height: 460px; }
+  .center-avatar { width: 130px; height: 130px; }
+  .avatar-img { width: 130px; height: 130px; }
+  .node-bubble { width: 66px; height: 66px; }
+}
+
+/* Mobile: orbit keeps rotating, just at a smaller radius (see orbitRadius
+   in script) so it stays inside the screen instead of overflowing */
 @media (max-width: 640px) {
-  .orbital-system { height: auto; flex-direction: column; padding: 1rem 0 2rem; gap: 1.5rem; }
-  .orbit-ring { display: none; }
-  .center-avatar { position: relative; top: unset; left: unset; transform: none; margin-bottom: 1.5rem; }
-  .orbit-node { position: relative; top: unset; left: unset; transform: none !important; }
-  .project-popup { position: relative; top: unset; left: unset; right: unset; bottom: unset; transform: none !important; width: 100%; margin-top: 0.5rem; }
+  .projects-section { padding: 3rem 1.1rem; }
+  .section-title-wrap { margin-bottom: 2.5rem; }
+  .orbital-system { height: 360px; }
+  .center-avatar { width: 100px; height: 100px; }
+  .avatar-img { width: 100px; height: 100px; }
+  .node-bubble { width: 56px; height: 56px; }
+
+  /* Smaller popup card so it doesn't run off the edge of the screen */
+  .project-popup { width: min(220px, 70vw); padding: 0.8rem; }
+  .popup-right  { left: 62px; }
+  .popup-left   { right: 62px; }
+  .popup-top    { bottom: 62px; }
+  .popup-bottom { top: 62px; }
+}
+
+@media (max-width: 380px) {
+  .orbital-system { height: 300px; }
+  .center-avatar { width: 84px; height: 84px; }
+  .avatar-img { width: 84px; height: 84px; }
+  .node-bubble { width: 48px; height: 48px; }
 }
 </style>

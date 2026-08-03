@@ -15,7 +15,7 @@
           <div class="ring ring-inner" />
           <div class="orbit-dot" />
           <div class="profile-circle">
-            <img src="/images/profile.jpg" alt="Nilima Kumar" class="profile-img" />
+            <img src="/images/profile1.jpg" alt="Nilima Kumar" class="profile-img" />
           </div>
         </div>
 

@@ -58,10 +58,32 @@
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue'
+import { reactive, ref, onMounted, onUnmounted } from 'vue'
 
 const colorMode = useColorMode()
 const { data: skills, pending, error } = await useFetch('/api/skills')
+
+// Bubbles were sized/positioned with fixed px values designed for a wide
+// desktop canvas. On narrow screens they'd overflow the container, so we
+// scale every bubble down depending on viewport width.
+const sizeScale = ref(1)
+
+function updateScale() {
+  const w = window.innerWidth
+  if (w <= 380)      sizeScale.value = 0.5
+  else if (w <= 480)  sizeScale.value = 0.6
+  else if (w <= 640)  sizeScale.value = 0.72
+  else if (w <= 900)  sizeScale.value = 0.85
+  else                sizeScale.value = 1
+}
+
+onMounted(() => {
+  updateScale()
+  window.addEventListener('resize', updateScale)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', updateScale)
+})
 
 // Pre-defined positions & sizes for up to 25 skills
 const positions = [
@@ -101,15 +123,25 @@ const skillsWithPos = reactive(
 )
 
 function anchorStyle(skill) {
-  return { left: `${skill.x}%`, top: `${skill.y}%`, width: `${skill.size}px`, height: `${skill.size}px` }
+  const size = skill.size * sizeScale.value
+  // min() keeps the bubble's right/bottom edge inside the container even
+  // when its percentage-based x/y position would otherwise push a
+  // fixed-size bubble past the edge on a narrow screen.
+  return {
+    left:   `min(${skill.x}%, calc(100% - ${size}px))`,
+    top:    `min(${skill.y}%, calc(100% - ${size}px))`,
+    width:  `${size}px`,
+    height: `${size}px`,
+  }
 }
 function bubbleVars(skill) {
-  return { '--bubble-color': skill.color, '--float-dur': `${skill.dur}s`, '--float-delay': `${skill.delay}s`, width: `${skill.size}px`, height: `${skill.size}px` }
+  const size = skill.size * sizeScale.value
+  return { '--bubble-color': skill.color, '--float-dur': `${skill.dur}s`, '--float-delay': `${skill.delay}s`, width: `${size}px`, height: `${size}px` }
 }
 function particleStyle(p, color) {
   const angle = (p / 14) * 360
-  const dist  = 35 + (p % 4) * 12
-  const size  = 3 + (p % 4) * 2
+  const dist  = (35 + (p % 4) * 12) * sizeScale.value
+  const size  = (3 + (p % 4) * 2) * sizeScale.value
   return { '--angle': `${angle}deg`, '--dist': `${dist}px`, width: `${size}px`, height: `${size}px`, background: p % 3 === 0 ? '#ffffff' : color }
 }
 function popBubble(skill) {
@@ -176,4 +208,22 @@ function popBubble(skill) {
 .burst-particle { position: absolute; top: 50%; left: 50%; border-radius: 50%; transform: translate(-50%, -50%); opacity: 0; }
 .burst-wrap.bursting .burst-particle { animation: burst 0.5s ease-out forwards; }
 @keyframes burst { 0% { transform: translate(-50%,-50%) rotate(var(--angle)) translateX(0) scale(1); opacity: 1; } 100% { transform: translate(-50%,-50%) rotate(var(--angle)) translateX(var(--dist)) scale(0); opacity: 0; } }
+
+/* ── Responsive section spacing + canvas height ── */
+@media (max-width: 900px) {
+  .skills-section { padding: 4.5rem 1.5rem; }
+  .bubbles-wrap { height: 520px; }
+}
+@media (max-width: 640px) {
+  .skills-section { padding: 3rem 1.1rem; }
+  .section-title-wrap { margin-bottom: 0.75rem; }
+  .bubbles-wrap { height: 440px; }
+  .bubble-name { font-size: 0.46rem; }
+  .flyout-logo { width: 26px; height: 26px; }
+  .flyout-name { font-size: 0.65rem; }
+  .skill-flyout { padding: 0.4rem 0.65rem; }
+}
+@media (max-width: 380px) {
+  .bubbles-wrap { height: 380px; }
+}
 </style>

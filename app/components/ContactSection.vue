@@ -11,21 +11,23 @@
 
         <!-- Official LinkedIn Profile Badge -->
         <div class="linkedin-badge-wrap">
-          <div
-            class="badge-base LI-profile-badge"
-            data-locale="en_US"
-            data-size="medium"
-            :data-theme="colorMode.value === 'light' ? 'light' : 'dark'"
-            data-type="VERTICAL"
-            data-vanity="nilimakumar"
-            data-version="v1"
-          >
-            <a
-              class="badge-base__link LI-simple-link"
-              href="https://in.linkedin.com/in/nilimakumar?trk=profile-badge"
-              target="_blank"
-              rel="noopener"
-            >Nilima Kumar</a>
+          <div class="linkedin-badge-scale">
+            <div
+              class="badge-base LI-profile-badge"
+              data-locale="en_US"
+              data-size="medium"
+              :data-theme="colorMode.value === 'light' ? 'light' : 'dark'"
+              data-type="VERTICAL"
+              data-vanity="nilimakumar"
+              data-version="v1"
+            >
+              <a
+                class="badge-base__link LI-simple-link"
+                href="https://in.linkedin.com/in/nilimakumar?trk=profile-badge"
+                target="_blank"
+                rel="noopener"
+              >Nilima Kumar</a>
+            </div>
           </div>
         </div>
 
@@ -172,9 +174,14 @@ onMounted(() => {
   padding: 1.5rem;
   background: var(--card); border: 1px solid var(--border); border-radius: 18px;
   backdrop-filter: blur(10px);
+  overflow: hidden; /* guard against the LinkedIn widget's fixed width on tiny screens */
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .linkedin-badge-wrap:hover { border-color: var(--li-blue); box-shadow: 0 0 24px rgba(10,102,194,0.2), 0 8px 32px rgba(0,0,0,0.15); }
+
+/* Wrapper that we can scale down as one unit if the badge (fixed px width from LinkedIn) is wider than the viewport allows */
+.linkedin-badge-scale { transform-origin: center; }
+
 .linkedin-badge-wrap :deep(.LI-simple-link),
 .linkedin-badge-wrap :deep(.badge-base__link) {
   color: var(--accent2) !important;
@@ -182,8 +189,45 @@ onMounted(() => {
 }
 .linkedin-badge-wrap :deep(.LI-simple-link:hover) { color: var(--text) !important; }
 
+/* ============ TABLET (≤ 900px) ============ */
+@media (max-width: 900px) {
+  .contact-section { padding: 4.5rem 1.5rem; }
+  .section-title-wrap { margin-bottom: 3rem; gap: 1rem; }
+  .contact-layout { gap: 1.25rem; }
+}
+
+/* ============ MOBILE (≤ 640px) ============ */
 @media (max-width: 640px) {
-  .contact-layout { flex-direction: column; }
-  .linkedin-badge-wrap { width: 100%; }
+  .contact-section { padding: 3rem 1.25rem; }
+
+  .section-title-wrap { gap: 0.75rem; margin-bottom: 2rem; }
+  .section-title { font-size: clamp(1.5rem, 7vw, 2rem); white-space: normal; }
+
+  .contact-layout { flex-direction: column; gap: 1.25rem; }
+  .linkedin-badge-wrap { width: 100%; padding: 1.25rem; }
+
+  .contact-card { padding: 1rem 1.1rem; gap: 0.85rem; }
+  .contact-icon-wrap { width: 40px; height: 40px; }
+  .contact-icon { width: 19px; height: 19px; }
+  .contact-value { font-size: 0.82rem; }
+
+  /* Long email address: allow it to wrap instead of clipping on narrow phones */
+  .contact-value { white-space: normal; word-break: break-word; }
+}
+
+/* ============ SMALL MOBILE (≤ 380px) ============ */
+@media (max-width: 380px) {
+  .contact-section { padding: 2.5rem 1rem; }
+  .contact-card { padding: 0.9rem 1rem; }
+  .contact-label { font-size: 0.7rem; }
+  .contact-value { font-size: 0.78rem; }
+
+  /* LinkedIn's official badge widget renders at a fixed pixel width (~ 258px+ for "medium").
+     On very narrow phones we scale the whole badge down as one block so it never overflows. */
+  .linkedin-badge-scale { transform: scale(0.85); }
+}
+
+@media (max-width: 320px) {
+  .linkedin-badge-scale { transform: scale(0.75); }
 }
 </style>

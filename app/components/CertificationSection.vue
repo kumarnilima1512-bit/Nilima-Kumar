@@ -21,7 +21,7 @@
         <p>No certifications yet. Check back soon! 🚀</p>
       </div>
 
-      <!-- Cards grid -->
+      <!-- Cards grid / mobile swipe carousel -->
       <div v-else class="cert-grid">
         <div
           v-for="(cert, i) in certifications"
@@ -70,6 +70,9 @@
           </div>
         </div>
       </div>
+
+      <!-- Mobile swipe hint (shows only on small screens) -->
+      <p v-if="certifications?.length" class="swipe-hint">← swipe to see more →</p>
 
     </section>
   </div>
@@ -130,7 +133,7 @@ onUnmounted(() => window.removeEventListener('scroll', checkVisibility))
 .loading-text { font-family: 'DM Sans', sans-serif; color: var(--subtext); font-size: 0.9rem; }
 .error-wrap, .empty-wrap { text-align: center; padding: 3rem; color: var(--subtext); font-family: 'DM Sans', sans-serif; }
 
-/* Grid */
+/* Grid (desktop / tablet default) */
 .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
 
 .cert-card {
@@ -158,4 +161,68 @@ onUnmounted(() => window.removeEventListener('scroll', checkVisibility))
 .cert-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 0.75rem; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600; color: var(--accent2); text-decoration: none; transition: color 0.2s ease, gap 0.2s ease; }
 .cert-link:hover { color: var(--text); gap: 8px; }
 .link-arrow { width: 12px; height: 12px; }
+
+/* Swipe hint text — hidden by default, only shown on mobile */
+.swipe-hint {
+  display: none;
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: var(--subtext);
+  margin-top: 1rem;
+  letter-spacing: 0.03em;
+  opacity: 0.7;
+}
+
+/* ============ TABLET (≤ 900px) ============ */
+@media (max-width: 900px) {
+  .cert-section { padding: 4.5rem 1.5rem; }
+  .section-title-wrap { margin-bottom: 3rem; gap: 1rem; }
+  .cert-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.2rem; }
+}
+
+/* ============ MOBILE (≤ 640px) — switch grid to swipeable carousel ============ */
+@media (max-width: 640px) {
+  .cert-section { padding: 3rem 1.25rem; }
+
+  .section-title-wrap { gap: 0.75rem; margin-bottom: 2rem; }
+  .section-title { font-size: clamp(1.5rem, 7vw, 2rem); white-space: normal; }
+
+  /* Turn grid into a horizontally swipeable row */
+  .cert-grid {
+    display: flex;
+    grid-template-columns: none;
+    gap: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.25rem 0.25rem 1rem;
+    margin: 0 -1.25rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    /* hide scrollbar but keep scrollable */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .cert-grid::-webkit-scrollbar { display: none; }
+
+  .cert-card {
+    flex: 0 0 78%;
+    max-width: 78%;
+    scroll-snap-align: center;
+    /* keep entrance animation but don't rely on translateY since card is horizontal now */
+  }
+
+  .cert-thumb { height: 130px; }
+
+  .swipe-hint { display: block; }
+}
+
+/* ============ SMALL MOBILE (≤ 380px) ============ */
+@media (max-width: 380px) {
+  .cert-section { padding: 2.5rem 1rem; }
+  .cert-card { flex: 0 0 85%; max-width: 85%; }
+  .cert-title { font-size: 0.9rem; }
+}
 </style>

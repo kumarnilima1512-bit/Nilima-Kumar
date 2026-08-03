@@ -13,6 +13,7 @@
     "@google/genai": "^2.13.0",
     "@notionhq/client": "^2.2.15",
     "@nuxtjs/color-mode": "^4.0.0",
+    "@nuxtjs/sitemap": "^8.3.2",
     "nuxt": "^4.4.2",
     "vue": "^3.5.30",
     "vue-router": "^5.0.3"

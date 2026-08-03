@@ -1,7 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  modules: ['@nuxtjs/tailwindcss','@nuxtjs/color-mode'],
+  modules: ['@nuxtjs/tailwindcss','@nuxtjs/color-mode','@nuxtjs/sitemap'],
+  app: {
+    head: {
+      viewport: 'width=device-width, initial-scale=1, maximum-scale=5'
+    }
+  },
   colorMode: {
     classSuffix: '',
     preference: 'dark' 

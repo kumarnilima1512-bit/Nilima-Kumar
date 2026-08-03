@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 
 const colorMode = useColorMode()
 const isLight   = computed(() => colorMode.value === 'light')
@@ -132,8 +132,16 @@ function onScroll() {
   }
 }
 
+// Prevent the page behind the mobile dropdown from scrolling while it's open
+watch(menuOpen, (open) => {
+  document.body.style.overflow = open ? 'hidden' : ''
+})
+
 onMounted(() => window.addEventListener('scroll', onScroll))
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+  document.body.style.overflow = ''
+})
 </script>
 
 <style scoped>
@@ -248,7 +256,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   align-items: center;
   padding: 0 6px;
   overflow: hidden;
-  transition: background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+  transition: background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease, width 0.3s ease, height 0.3s ease;
 }
 
 .toggle-track.is-dark {
@@ -338,6 +346,10 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   background: rgba(10,10,20,0.92);
   backdrop-filter: blur(20px);
   border-top: 1px solid rgba(124,58,237,0.2);
+  /* Cap dropdown height and let it scroll internally so it never runs off
+     the bottom of the screen on short viewports (e.g. landscape phones) */
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
 }
 :global(.light) .mobile-links {
   background: rgba(245,243,255,0.95);
@@ -367,5 +379,20 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 }
 .mobile-menu-enter-from, .mobile-menu-leave-to {
   opacity: 0; transform: translateY(-8px);
+}
+
+/* ── Small phone tightening ─────────────────────── */
+@media (max-width: 480px) {
+  .navbar { padding: 0 1.1rem; }
+  .nav-logo { font-size: 1.4rem; }
+  .toggle-track { width: 52px; height: 28px; }
+  .icon { width: 13px; height: 13px; }
+  .moon-icon { left: 6px; }
+  .sun-icon { right: 6px; }
+  .toggle-thumb { width: 20px; height: 20px; }
+  .thumb-dark { left: 4px; }
+  .thumb-light { left: 28px; }
+  .mobile-right { gap: 0.7rem; }
+  .mobile-link { padding: 0.7rem 1.5rem; }
 }
 </style>

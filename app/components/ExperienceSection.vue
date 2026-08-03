@@ -130,6 +130,13 @@ onUnmounted(() => window.removeEventListener('scroll', checkVisibility))
   --text: #f1f0ff; --subtext: #9ca3af; --ring: rgba(124,58,237,0.5);
   --glow: rgba(124,58,237,0.25); --card: rgba(255,255,255,0.03); --border: rgba(124,58,237,0.2);
   background: var(--bg); transition: background 0.5s ease;
+
+  /* Gap reserved between each card and the center track for the dot,
+     and how far the dot sits from its card's inner edge. Both shrink on
+     narrower screens (see media queries below) so the left/right zig-zag
+     layout keeps working instead of being collapsed to one column. */
+  --gap: 3rem;
+  --dot-offset: 3.6rem;
 }
 .exp-root.light {
   --bg: #f5f3ff; --bg2: #ede9fe; --accent: #6d28d9; --accent2: #7c3aed;
@@ -154,22 +161,22 @@ onUnmounted(() => window.removeEventListener('scroll', checkVisibility))
 .timeline-track { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--border); transform: translateX(-50%); overflow: hidden; }
 .timeline-progress { width: 100%; background: linear-gradient(to bottom, var(--accent), var(--accent2)); box-shadow: 0 0 12px var(--ring); transition: height 0.1s linear; }
 
-.exp-item { position: relative; width: calc(50% - 3rem); margin-bottom: 4rem; opacity: 0; transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.34,1.2,0.64,1); }
+/* Left/right zig-zag stays at every screen size — only --gap and
+   --dot-offset shrink on small screens (see media queries below) */
+.exp-item {
+  position: relative;
+  width: calc(50% - var(--gap));
+  margin-bottom: 4rem;
+  opacity: 0;
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.34,1.2,0.64,1);
+}
 .item-left { margin-right: auto; transform: translateX(-60px); }
 .item-right { margin-left: auto; transform: translateX(60px); }
 .exp-item.visible { opacity: 1; transform: translateX(0); }
 
-@media (max-width: 768px) {
-  .timeline-track { left: 1.5rem; }
-  .exp-item { width: calc(100% - 3.5rem); margin-left: auto !important; margin-right: 0 !important; }
-  .item-left, .item-right { transform: translateX(40px); }
-  .exp-item.visible { transform: translateX(0); }
-  .timeline-dot { left: -3rem !important; right: unset !important; }
-}
-
 .timeline-dot { position: absolute; top: 1.5rem; width: 16px; height: 16px; z-index: 5; }
-.item-left .timeline-dot  { right: -3.6rem; }
-.item-right .timeline-dot { left: -3.6rem; }
+.item-left .timeline-dot  { right: calc(-1 * var(--dot-offset)); }
+.item-right .timeline-dot { left: calc(-1 * var(--dot-offset)); }
 .dot-inner { width: 16px; height: 16px; border-radius: 50%; background: var(--bg2); border: 2px solid var(--border); position: relative; z-index: 2; transition: border-color 0.4s, background 0.4s; }
 .timeline-dot.active .dot-inner { border-color: var(--accent2); background: var(--accent); box-shadow: 0 0 12px var(--ring); }
 .dot-ring { position: absolute; inset: -5px; border-radius: 50%; border: 1.5px solid var(--accent2); opacity: 0; transform: scale(0.5); transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s; }
@@ -191,4 +198,43 @@ onUnmounted(() => window.removeEventListener('scroll', checkVisibility))
 .point-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent2); flex-shrink: 0; margin-top: 0.45rem; }
 .card-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; padding: 0 1.25rem 1.25rem; }
 .tag { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; padding: 0.15rem 0.55rem; border-radius: 999px; background: var(--card); border: 1px solid var(--border); color: var(--accent2); }
+
+/* ── Tablet: shrink the gap a bit + tighten section padding ── */
+@media (max-width: 900px) {
+  .exp-root { --gap: 2.25rem; --dot-offset: 2.85rem; }
+  .exp-section { padding: 4.5rem 1.5rem; }
+}
+
+/* ── Mobile: gap/dot-offset shrink further, but stays two-column
+   zig-zag exactly like desktop — card text just gets a bit smaller
+   so it still reads well in the narrower half-width column ── */
+@media (max-width: 640px) {
+  .exp-root { --gap: 1.3rem; --dot-offset: 1.9rem; }
+  .exp-section { padding: 3rem 0.9rem; }
+  .section-title-wrap { margin-bottom: 2.75rem; gap: 1rem; }
+  .exp-item { margin-bottom: 2.5rem; }
+  .item-left { transform: translateX(-24px); }
+  .item-right { transform: translateX(24px); }
+
+  .card-header { padding: 0.85rem 0.85rem 0.35rem; }
+  .card-role { font-size: 0.88rem; }
+  .card-company { font-size: 0.74rem; }
+  .card-meta { padding: 0.35rem 0.85rem 0.55rem; gap: 0.3rem; }
+  .meta-badge { font-size: 0.6rem; padding: 0.15rem 0.4rem; }
+  .meta-icon { width: 10px; height: 10px; }
+  .card-points { padding: 0 0.85rem 0.55rem; gap: 0.35rem; }
+  .point { font-size: 0.7rem; }
+  .card-tags { padding: 0 0.85rem 0.85rem; }
+  .tag { font-size: 0.56rem; padding: 0.1rem 0.4rem; }
+
+  .timeline-dot { width: 12px; height: 12px; top: 1.1rem; }
+  .dot-inner { width: 12px; height: 12px; }
+}
+
+/* ── Very small phones: gap shrinks once more so cards don't get
+   crushed too thin ── */
+@media (max-width: 400px) {
+  .exp-root { --gap: 0.85rem; --dot-offset: 1.35rem; }
+  .exp-section { padding: 2.5rem 0.7rem; }
+}
 </style>
