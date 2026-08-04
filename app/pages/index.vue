@@ -3,11 +3,12 @@ definePageMeta({ layout: 'default' })
 useSeoMeta({
   title: 'Nilima Kumar | Full Stack Developer',
   description:
-    'Official portfolio of Nilima Kumar. Explore my projects, skills, experience, certifications, and AI-powered web development work built with Nuxt.js, Vue.js, TypeScript, and modern technologies.',
+    'Official portfolio of Nilima Kumar. Explore my projects, skills, experience, and AI-powered web applications built with Nuxt.js, Vue.js, and TypeScript.',
   ogTitle: 'Nilima Kumar | Full Stack Developer',
   ogDescription:
     'Explore my portfolio, projects, technical skills, and experience in Full Stack Development and AI.',
-  ogImage: 'https://nilima-kumar.vercel.app/og-image.png',
+  ogSiteName: 'Nilima Kumar Portfolio',
+  ogImage: 'https://nilima-kumar.vercel.app/images/og-image.png',
   ogType: 'website',
   ogUrl: 'https://nilima-kumar.vercel.app',
   twitterCard: 'summary_large_image',
