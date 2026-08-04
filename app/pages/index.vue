@@ -7,13 +7,15 @@ useSeoMeta({
   ogTitle: 'Nilima Kumar | Full Stack Developer',
   ogDescription:
     'Explore my portfolio, projects, technical skills, and experience in Full Stack Development and AI.',
+  ogImage: 'https://nilima-kumar.vercel.app/og-image.png',
   ogType: 'website',
   ogUrl: 'https://nilima-kumar.vercel.app',
   twitterCard: 'summary_large_image',
   twitterTitle: 'Nilima Kumar | Full Stack Developer',
   twitterDescription:
-    'Official portfolio of Nilima Kumar showcasing projects, skills, and experience.'
-})
+    'Official portfolio of Nilima Kumar showcasing projects, skills, and experience.',
+  twitterImage: 'https://nilima-kumar.vercel.app/images/og-image.png'
+  })
 
 useHead({
   link: [
