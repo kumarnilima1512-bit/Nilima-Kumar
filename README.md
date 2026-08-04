@@ -1,75 +1,118 @@
-# Nuxt Minimal Starter
+# 👋 Hi, I'm Nilima Kumar
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+🚀 **Turning Ideas Into Code | Full Stack Developer**
 
-## Setup
+Welcome to my personal portfolio repository! This project showcases my skills, experience, projects, certifications, and achievements in a modern, responsive, and SEO-friendly web application built with **Nuxt.js**.
 
-Make sure to install dependencies:
+## 🌐 Live Portfolio
+
+**Website:** https://nilima-kumar.vercel.app
+
+## 📌 About
+
+This portfolio serves as my digital presence where visitors can explore about me,  my projects, and get in touch.
+
+It highlights my journey as a developer and demonstrates my ability to build modern, scalable, and user-friendly web applications.
+
+## ✨ Features
+
+* Responsive design for all devices
+* Modern and clean UI
+* Dark & Light mode
+* Project showcase
+* Skills section
+* Work experience
+* Certifications
+* Contact section
+* SEO optimized
+* Sitemap & Robots.txt support
+* Fast performance with Nuxt
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* Nuxt.js
+* Vue.js
+* TypeScript
+* Tailwind CSS
+
+### Development Tools
+
+* Git
+* GitHub
+* Vercel
+* VS Code
+
+## 📂 Project Structure
+
+```
+.
+├── components/
+├── pages/
+├── layouts/
+├── public/
+├── app.vue
+├── nuxt.config.ts
+└── package.json
+```
+
+## 🚀 Getting Started
+
+Clone the repository
 
 ```bash
-# npm
+git clone https://github.com/kumarnilima1512-bit/Nilima-Kumar
+```
+
+Go into the project directory
+
+
+Install dependencies
+
+```bash
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+Start the development server
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
-
-Build the application for production:
+Build for production
 
 ```bash
-# npm
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+Preview production build
 
 ```bash
-# npm
 npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## 📈 Future Improvements
+
+* Blog section
+* Project filtering
+* Animations
+* Multi-language support
+* CMS integration
+* Visitor analytics
+
+## 📬 Contact
+
+* **Email:** [kumarnilima1512@gmail.com](mailto:kumarnilima1512@gmail.com)
+* **LinkedIn:** https://linkedin.com/in/nilimakumar
+* **GitHub:** https://github.com/kumarnilima1512-bit
+* **Portfolio:** https://nilima-kumar.vercel.app
+
+## ⭐ Support
+
+If you like this project, consider giving it a ⭐ on GitHub. It helps and motivates me to build more awesome projects.
+
+---
+
+Made with ❤️ by **Nilima Kumar**
