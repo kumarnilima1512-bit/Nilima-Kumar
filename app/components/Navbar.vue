@@ -3,7 +3,9 @@
     <div class="nav-inner">
 
       <!-- Logo -->
-      <div class="nav-logo">NK<span class="dot">.</span></div>
+      <div class="nav-logo">
+        <img src="/images/logo.png" alt="NK Logo" class="logo-img" />
+      </div>
 
       <!-- Desktop: Links + Toggle -->
       <div class="nav-right">
@@ -183,15 +185,17 @@ onUnmounted(() => {
 
 /* ── Logo ───────────────────────────────────────── */
 .nav-logo {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #a855f7;
-  letter-spacing: -0.03em;
+  display: flex;
+  align-items: center;
   cursor: default;
   user-select: none;
 }
-.dot { color: #22d3ee; }
+.logo-img {
+  height: 40px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
 
 /* ── Desktop right ──────────────────────────────── */
 .nav-right {
@@ -384,7 +388,7 @@ onUnmounted(() => {
 /* ── Small phone tightening ─────────────────────── */
 @media (max-width: 480px) {
   .navbar { padding: 0 1.1rem; }
-  .nav-logo { font-size: 1.4rem; }
+  .logo-img { height: 32px; }
   .toggle-track { width: 52px; height: 28px; }
   .icon { width: 13px; height: 13px; }
   .moon-icon { left: 6px; }
