@@ -21,7 +21,12 @@ export default defineNuxtConfig({
     notionExperienceDb:     process.env.NOTION_EXPERIENCE_DB,
     notionSkillsDb:         process.env.NOTION_SKILLS_DB,
     notionCertificationsDb: process.env.NOTION_CERTIFICATIONS_DB,
-    notionChatbotDb:        process.env.NOTION_CHATBOT_DB
+    notionChatbotDb:        process.env.NOTION_CHATBOT_DB,
+
+    public: {
+              gaMeasurementId: process.env.NUXT_PUBLIC_GA_MEASUREMENT_ID
+            }
   },
+  
   devtools: { enabled: true }
 })
