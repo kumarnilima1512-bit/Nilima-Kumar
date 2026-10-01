@@ -4,7 +4,7 @@
 
       <!-- Section Title -->
       <div class="section-title-wrap">
-        <h2 class="section-title">About <span class="highlight">Me</span></h2>
+        <h2 class="section-title">About <span class="highlight">Nilima</span></h2>
         <div class="title-line" />
       </div>
 
@@ -35,40 +35,41 @@
         </div>
 
         <!-- Right: Bio + CV -->
-        <div class="about-content" :class="{ loaded: mounted }">
+        <!-- Right: Bio + CV -->
+<div class="about-content" :class="{ loaded: mounted }">
 
-          <p class="bio-text">
-            Hey! I'm <span class="accent">Nilima Kumar</span>, a 21-year-old passionate
-            <span class="accent">Full Stack Developer</span> currently pursuing my degree at
-            <span class="accent">Dr. Sudhir Chandra Sur Institute of Technology and Sports Complex</span>.
-            I completed my schooling from
-            <span class="accent">Jadavpur Sammilita Balika Vidyalaya</span>.
-          </p>
+  <p class="bio-text">
+    This is <span class="accent">Nilima Kumar</span>, a 21-year-old passionate
+    <span class="accent">Full Stack Developer</span> currently pursuing her degree at
+    <span class="accent">Dr. Sudhir Chandra Sur Institute of Technology and Sports Complex</span>.
+    She completed her schooling from
+    <span class="accent">Jadavpur Sammilita Balika Vidyalaya</span>.
+  </p>
 
-          <p class="bio-text">
-            I'm deeply passionate about building modern web applications using
-            cutting-edge frameworks and technologies. From crafting pixel-perfect UIs
-            to writing clean, scalable backend logic — I love every part of the
-            development journey.
-          </p>
+  <p class="bio-text">
+    Nilima is deeply passionate about building modern web applications using
+    cutting-edge frameworks and technologies. From crafting pixel-perfect UIs
+    to writing clean, scalable backend logic, she loves every part of the
+    development journey.
+  </p>
 
-          <p class="bio-text">
-            Currently focused on modern full-stack development, I'm always eager to
-            explore new tools, contribute to real-world projects, and grow as a
-            developer every single day.
-          </p>
+  <p class="bio-text">
+    She enjoys turning ideas into polished, responsive, and user-friendly
+    products, with a strong focus on performance, clean code, and thoughtful
+    design. Whether it's working on the frontend with
+    <span class="accent">Vue &amp; Nuxt</span> or building the logic behind the scenes,
+    she approaches every problem with curiosity and a problem-solving mindset.
+  </p>
 
-          <!-- CV Button -->
-          <!-- <a href="/Nilima_Kumar_CV.pdf" download class="cv-btn">
-            <svg viewBox="0 0 24 24" fill="none" class="btn-icon">
-              <path d="M12 16l-4-4h2.5V4h3v8H16l-4 4z" fill="currentColor"/>
-              <path d="M4 18h16v2H4v-2z" fill="currentColor"/>
-            </svg>
-            Download CV
-            <span class="btn-glow" />
-          </a> -->
+  <p class="bio-text">
+    Currently focused on modern full-stack development, Nilima is always eager to
+    explore new tools, contribute to real-world projects, collaborate with
+    like-minded developers, and grow every single day.
+  </p>
 
-        </div>
+  <!-- CV Button (unchanged, still commented out) -->
+
+</div>
       </div>
     </section>
   </div>

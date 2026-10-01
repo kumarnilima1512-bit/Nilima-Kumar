@@ -3,7 +3,7 @@
     <section class="exp-section">
 
       <div class="section-title-wrap">
-        <h2 class="section-title">My <span class="highlight">Experience</span></h2>
+        <h2 class="section-title"> <span class="highlight">Experience</span></h2>
         <div class="title-line" />
       </div>
 

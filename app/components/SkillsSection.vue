@@ -3,7 +3,7 @@
     <section class="skills-section">
 
       <div class="section-title-wrap">
-        <h2 class="section-title">My <span class="highlight">Skills</span></h2>
+        <h2 class="section-title"> <span class="highlight">Skills</span></h2>
         <div class="title-line" />
       </div>
 

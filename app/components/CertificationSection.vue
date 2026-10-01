@@ -3,7 +3,7 @@
     <section class="cert-section">
 
       <div class="section-title-wrap">
-        <h2 class="section-title">My <span class="highlight">Certifications</span></h2>
+        <h2 class="section-title"> <span class="highlight">Certifications</span></h2>
         <div class="title-line" />
       </div>
 
